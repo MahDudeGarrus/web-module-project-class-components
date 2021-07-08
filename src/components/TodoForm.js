@@ -20,7 +20,7 @@ class ToDoForm extends React.Component{
     //handles events in the submission process
     submitForm = (event) => {
         event.preventDefault()
-        this.props.handleAddItem(this.state.inputValue)
+        this.props.handleAddTask(this.state.inputValue)
         this.setState({
             inputValue: ''
         })

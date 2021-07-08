@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 // component imports
 import ToDoForm from './components/TodoForm';
+import ToDoList from './components/TodoList';
 
 const toDos = [
   {
@@ -70,19 +71,51 @@ class App extends React.Component {
     }
   }
 
-  handleAddItem =(task) =>{
-    const item = {
+  handleAddTask =(task) =>{
+    const tasks = {
       task: task,
       id:this.state.toDos.length,
       completed: false
     }
+
+    const newTasks = [...this.state.toDos, tasks]
+    this.setState({
+      toDos: newTasks
+    })
+  }
+
+  handleTaskToggle = (taskId) => {
+    this.setState({
+      toDos: this.state.toDos.map(task => {
+        if (taskId === task.id) {
+          return {
+            ...task,
+            completed: !task.completed
+          };
+        }
+        return task;
+      })
+    });
+  }
+
+  handleClearTask = () => {
+    const newTasks = this.state.toDos.filter(task => {
+      return !task.completed
+    })
+
+    this.setState({
+      toDos: newTasks
+    })
   }
 
   render() {
     return (
       <div>
-        <h2>Welcome to your Todo App!</h2>
-        <ToDoForm handleAddItem={this.handleAddItem}/>
+        <div>
+          <h2>Welcome to your Todo App!</h2>
+          <ToDoForm handleAddTask={this.handleAddTask}/>
+        </div>
+        <ToDoList handleClearTask={this.handleClearTask} handleTaskToggle={this.handleTaskToggle} toDos={this.state.toDos}/>
       </div>
     );
   }
